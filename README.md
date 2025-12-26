@@ -9,10 +9,7 @@
 3. プログラムを実行
 
 ## VScode
-編集する
-↓
-git add .
-↓
-git commit -m "変更内容"
-↓
-git push
+1. 編集する
+2. git add .
+3. git commit -m "変更内容"
+4. git push
