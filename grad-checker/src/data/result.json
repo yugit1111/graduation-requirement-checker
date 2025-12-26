@@ -1,0 +1,15 @@
+{
+  "totalCredits": 6,
+  "byCategory": {
+    "common": 2,
+    "specialized": 4,
+    "free": 2
+  },
+  "requirementsMet": {
+    "common": false,
+    "specialized": false,
+    "free": false,
+    "total": false
+  },
+  "canGraduate": false
+}

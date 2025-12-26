@@ -1,0 +1,10 @@
+{
+  "faculty": "工学部",
+  "department": "情報工学科",
+  "requiredCredits": {
+    "common": 30,
+    "specialized": 50,
+    "free": 10,
+    "total": 90
+  }
+}

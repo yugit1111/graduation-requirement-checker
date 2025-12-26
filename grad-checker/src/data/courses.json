@@ -1,0 +1,32 @@
+[
+  {
+    "name": "プログラミング基礎",
+    "category": "specialized",
+    "credits": 2,
+    "passed": true
+  },
+  {
+    "name": "データ構造とアルゴリズム",
+    "category": "specialized",
+    "credits": 2,
+    "passed": true
+  },
+  {
+    "name": "線形代数I",
+    "category": "common",
+    "credits": 2,
+    "passed": true
+  },
+  {
+    "name": "英語I",
+    "category": "common",
+    "credits": 2,
+    "passed": false
+  },
+  {
+    "name": "自由選択科目A",
+    "category": "free",
+    "credits": 2,
+    "passed": true
+  }
+]
