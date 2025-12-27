@@ -31,3 +31,9 @@ export class Course {
   }
 }
 
+export type GraduationResult = {
+  category: string;
+  earned: number;
+  required: number;
+  passed: boolean;
+};

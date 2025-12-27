@@ -1,0 +1,11 @@
+{
+  "requirements": [
+    { "category": "共通教育", "required": 30 },
+    { "category": "専門", "required": 50 }
+  ],
+  "courses": [
+    { "name": "数学A", "category": "共通教育", "credits": 2 },
+    { "name": "物理B", "category": "専門", "credits": 4 },
+    { "name": "化学C", "category": "専門", "credits": 3 }
+  ]
+}

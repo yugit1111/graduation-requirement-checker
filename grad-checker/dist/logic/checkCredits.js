@@ -10,11 +10,15 @@ export class GraduationChecker {
                 req.addCredits(course.credits);
         }
     }
-    report() {
-        const result = {};
-        for (const req of this.requirements) {
-            result[req.category] = req.earnedCredits;
-        }
-        return result;
+    getResults() {
+        return this.requirements.map(req => ({
+            category: req.category,
+            earned: req.earnedCredits,
+            required: req.requiredCredits,
+            passed: req.isSatisfied(),
+        }));
+    }
+    getUnfulfilled() {
+        return this.getResults().filter(r => !r.passed);
     }
 }

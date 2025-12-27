@@ -1,13 +1,17 @@
-import { Requirement, Course } from "./types.js";
+import { Requirement } from "./types";
+
+export type CheckResult = {
+  category: string;
+  earned: number;
+  required: number;
+  passed: boolean;
+};
 
 export class GraduationChecker {
-  requirements: Requirement[];
-  courses: Course[];
-
-  constructor(requirements: Requirement[], courses: Course[]) {
-    this.requirements = requirements;
-    this.courses = courses;
-  }
+  constructor(
+    private requirements: Requirement[],
+    private courses: { category: string; credits: number }[]
+  ) {}
 
   calculate() {
     for (const course of this.courses) {
@@ -16,11 +20,16 @@ export class GraduationChecker {
     }
   }
 
-  report(): Record<string, number> {
-    const result: Record<string, number> = {};
-    for (const req of this.requirements) {
-      result[req.category] = req.earnedCredits;
-    }
-    return result;
+  getResults(): CheckResult[] {
+    return this.requirements.map(req => ({
+      category: req.category,
+      earned: req.earnedCredits,
+      required: req.requiredCredits,
+      passed: req.isSatisfied(),
+    }));
+  }
+
+  getUnfulfilled(): CheckResult[] {
+    return this.getResults().filter(r => !r.passed);
   }
 }
