@@ -30,7 +30,7 @@
 
 🖥️ 使用技術
 
-HTML / CSS / JavaScript（Vanilla JS）
+HTML / CSS / TypeScript
 
 ローカルストレージ（localStorage）
 
