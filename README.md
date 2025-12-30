@@ -41,7 +41,7 @@ HTML / CSS / TypeScript
 
 🚀 使い方
 1. 以下のURLにアクセス  
-   👉 https://ユーザー名.github.io/リポジトリ名/
+   👉  https://nakahara11.github.io/graduation-requirement-checker/
 2. 履修した科目を入力
 3. 判定ボタンを押すだけ
 
