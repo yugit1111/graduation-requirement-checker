@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>卒業要件チェッカー</title>
+<style>
+/* ===============================
+   ベース設定
+=============================== */
+body {
+  font-family: "Noto Sans JP", system-ui, sans-serif;
+  background: #f3f5f8;
+  color: #333;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px;
+  line-height: 1.6;
+}
+
+/* ===============================
+   セクションカード
+=============================== */
+.section {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  transition: box-shadow 0.25s ease;
+}
+
+.section:hover {
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* ===============================
+   見出し
+=============================== */
+h1 {
+  text-align: center;
+  font-size: 1.9rem;
+  margin-bottom: 1.2em;
+  letter-spacing: 0.03em;
+}
+
+.section h2 {
+  font-size: 1.25rem;
+  margin-bottom: 12px;
+  padding-left: 10px;
+  border-left: 5px solid #4caf50;
+}
+
+/* ===============================
+   入力・ボタン
+=============================== */
+input,
+select,
+button {
+  padding: 9px 12px;
+  font-size: 0.95rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  transition: all 0.2s ease;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #4caf50;
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+}
+
+button {
+  background: #4caf50;
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #43a047;
+  transform: translateY(-1px);
+}
+
+/* ===============================
+   テーブル
+=============================== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+}
+
+th {
+  background: #f1f3f5;
+  text-align: left;
+  font-weight: 600;
+}
+
+th, td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+tr:hover {
+  background: #f9fbfc;
+}
+
+/* ===============================
+   判定カード
+=============================== */
+.card {
+  border-radius: 14px;
+  padding: 18px;
+  margin-top: 16px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+.card.pass {
+  background: #e9f7ef;
+  border-left: 6px solid #2e7d32;
+  color: #1b5e20;
+}
+
+.card.fail {
+  background: #fdecea;
+  border-left: 6px solid #c62828;
+  color: #8e0000;
+}
+
+.card h3 {
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-size: 1.2rem;
+}
+
+/* ===============================
+   必須未達の強調
+=============================== */
+.missing-required {
+  background-color: #ffe5e5 !important;
+  border-left: 6px solid #e53935;
+}
+
+#missingRequiredBox {
+  background: #fff0f0;
+  border-left: 6px solid #e53935;
+}
+
+#missingRequiredList li {
+  margin: 4px 0;
+  font-weight: bold;
+}
+
+/* ===============================
+   モバイル対応
+=============================== */
+@media (max-width: 600px) {
+  body {
+    padding: 12px;
+  }
+
+  input, select, button {
+    width: 100%;
+  }
+
+  .section {
+    padding: 16px;
+  }
+}
+.required-mark {
+  color: #d32f2f;
+  font-weight: bold;
+  margin-left: 6px;
+}
+</style>
+</head>
+<body>
+
+<h1>卒業要件チェッカー（情報工学コース 2023）</h1>
+
+<div class="section">
+  <h2>必要単位</h2>
+  専門教育科目 <input id="reqSpecialized" type="number" value="0" min="0">
+  取得単位 <input id="obtainedSpecialized" type="number" value="0" min="0">
+</div>
+
+<div class="section">  
+  教養教育科目 <input id="reqGeneralEducation" type="number" value="0" min="0">
+  取得単位 <input id="obtainedGeneralEducation" type="number" value="0" min="0">
+</div>
+
+<!-- 使い方折りたたみ -->
+<div class="section">
+  <button id="toggleRules">卒業要件チェッカーの使い方を見る</button>
+  <div id="rulesSection" style="display:none; padding:10px; background:#f0f0f0; margin-top:5px; border-radius:8px;">
+    <ul>
+      <li>必要単位に自分の取得状況を入力します</li>
+      <li>教養教育科目は取得単位数記入必須！</li>
+      <li>科目追加で履修科目を登録できます</li>
+      <li>「判定」ボタンを押すと専門・教養・卒業判定が表示されます</li>
+      <li>「CSV/JSON」ボタンでデータを保存できます</li>
+      <li>入力内容は自動でブラウザに保存されます</li>
+    </ul>
+  </div>
+</div>
+
+<div class="section">
+  <h2>科目追加</h2>
+  <button id="loadTemplate">学科テンプレート読み込み</button><br>
+  <input id="courseName" placeholder="科目名">
+  <select id="courseCategory">
+    <option value="専門基礎科目_必須">専門基礎科目 必須</option>
+    <option value="専門基礎科目_選択">専門基礎科目 選択</option>
+    <option value="系科目_必須">系科目 必須</option>
+    <option value="系科目_選択">系科目 選択</option>
+    <option value="コース科目_必須">コース科目 必須</option>
+    <option value="コース科目_選択">コース科目 選択</option>
+    <option value="他コース科目_選択">他コース科目 選択</option>
+  </select>
+  <input id="courseCredits" type="number" placeholder="単位" min="0">
+  <button id="addCourse">追加</button>
+  <button id="checkAllRequired">必須科目を一括チェック</button>
+</div>
+
+<div class="section">
+  <input id="searchInput" placeholder="検索">
+</div>
+
+<div class="section">
+  <table>
+    <thead>
+      <tr>
+        <th>✔</th><th>科目</th><th>分類</th><th>単位</th><th>削除</th>
+      </tr>
+    </thead>
+    <tbody id="courseTable"></tbody>
+  </table>
+</div>
+
+<div class="section">
+  <button id="run">判定結果</button>
+  <div id="missingRequiredBox" class="card" style="display:none;">
+    <h3>⚠ 未履修の必須科目</h3>
+    <ul id="missingRequiredList"></ul>
+  </div>
+  <div id="result"></div>
+  <div id="requiredWarning" style="color:red; font-weight:bold;"></div>
+</div>
+<script src="main.js"></script>
+</body>
+</html>
