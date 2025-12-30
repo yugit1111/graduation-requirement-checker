@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ES2020",          // ES Modules
+    "moduleResolution": "Node",
+    "outDir": "dist/browser",
+    "strict": true,
+    "esModuleInterop": false,
+    "isolatedModules": true
+  },
+  "include": [
+    "src/**/*",                  // ブラウザで使う TypeScript
+    "grad-checker/browser/**/*"  // main.ts などブラウザ専用
+  ],
+  "exclude": [
+    "tests/**/*",                // Node 用テストは除外
+    "dist/**/*",                 // 既存ビルド成果物を除外
+    "node_modules/**/*"
+  ]
+}

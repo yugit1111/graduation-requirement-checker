@@ -14,7 +14,7 @@ export type ParsedJson = {
 };
 
 export class JsonValidator {
-  validate(data: unknown): Result<ParsedJson> {
+  validateFromObject(data: unknown): Result<ParsedJson>{
     if (typeof data !== "object" || data === null) {
       return { ok: false, error: "JSON がオブジェクトではありません" };
     }

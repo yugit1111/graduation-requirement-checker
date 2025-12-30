@@ -1,0 +1,102 @@
+{
+  "department": "工学部 工学科 情報工学コース",
+  "version": "2023",
+  "generalEducationRequired": 30,
+  "categories": [
+    {
+      "id": "foundation",
+      "name": "専門基礎科目",
+      "requiredCredits": 18,
+      "minElectiveCredits": 4,
+      "maxElectiveCredits": 8,
+      "courses": [
+        { "name": "微分積分", "credits": 2, "required": true, "subCategory": "専門基礎科目_必須" },
+        { "name": "線形代数", "credits": 2, "required": true, "subCategory": "専門基礎科目_必須" },
+        { "name": "工学基礎実験演習", "credits": 2, "required": true, "subCategory": "専門基礎科目_必須" },
+        { "name": "工学安全教育", "credits": 1, "required": true, "subCategory": "専門基礎科目_必須" },
+        { "name": "数理データサイエンス（発展）", "credits": 1, "required": true, "subCategory": "専門基礎科目_必須" },
+        { "name": "専門英語", "credits": 2, "required": true, "subCategory": "専門基礎科目_必須" },
+        { "name": "物理学基礎（力学）", "credits": 2, "required": false, "subCategory": "専門基礎科目_選択" },
+        { "name": "物理学基礎（電磁気学）", "credits": 2, "required": false, "subCategory": "専門基礎科目_選択" },
+        { "name": "プログラミング", "credits": 2, "required": false, "subCategory": "専門基礎科目_選択" },
+        { "name": "微分方程式", "credits": 2, "required": false, "subCategory": "専門基礎科目_選択" },
+        { "name": "化学基礎", "credits": 2, "required": false, "subCategory": "専門基礎科目_選択" },
+        { "name": "生物学基礎", "credits": 2, "required": false, "subCategory": "専門基礎科目_選択" }
+      ]
+    },
+    {
+      "id": "specialized_foundation",
+      "name": "系科目",
+      "requiredCredits": 19,
+      "minElectiveCredits": 4,
+      "maxElectiveCredits": 8,
+      "courses": [
+        { "name": "技術表現法", "credits": 1, "required": true, "subCategory": "系科目_必須" },
+        { "name": "特別研究", "credits": 10, "required": true, "subCategory": "系科目_必須" },
+        { "name": "統計データ解析基礎", "credits": 2, "required": false, "subCategory": "系科目_選択" },
+        { "name": "フーリエ解析・ラプラス変換", "credits": 2, "required": false, "subCategory": "系科目_選択" },
+        { "name": "数値計算法", "credits": 2, "required": false, "subCategory": "系科目_選択" },
+        { "name": "情報理論", "credits": 2, "required": false, "subCategory": "系科目_選択" },
+        { "name": "実践コミュニケーション論", "credits": 2, "required": false, "subCategory": "系科目_選択" }
+      ]
+    },
+    {
+      "id": "specialized",
+      "name": "コース科目",
+      "requiredCredits": 59,
+      "minElectiveCredits": 16,
+      "maxOtherCourseCredits": 6,
+      "courses": [
+        { "name": "データ構造とアルゴリズム", "credits": 2, "required": true, "subCategory": "コース科目_必須" },
+        { "name": "グラフ理論（情報）", "credits": 2, "required": true, "subCategory": "コース科目_必須" },
+        { "name": "プログラミング演習1", "credits": 1, "required": true, "subCategory": "コース科目_必須" },
+        { "name": "プログラミング演習2", "credits": 1, "required": true, "subCategory": "コース科目_必須" },
+        { "name": "コンピューターハードウェア", "credits": 2, "required": true, "subCategory": "コース科目_必須" },
+        { "name": "応用解析", "credits": 2, "required": true, "subCategory": "コース科目_必須" },
+        { "name": "オペレーティングシステム", "credits": 2, "required": true, "subCategory": "コース科目_必須" },
+        { "name": "コンピュータアーキテクチャ1", "credits": 2, "required": true, "subCategory": "コース科目_必須" },
+        { "name": "システムプログラミング1", "credits": 1, "required": true, "subCategory": "コース科目_必須" },
+        { "name": "システムプログラミング2", "credits": 1, "required": true, "subCategory": "コース科目_必須" },
+        { "name": "応用数学", "credits": 2, "required": true, "subCategory": "コース科目_必須" },
+        { "name": "プログラミング技法", "credits": 2, "required": true, "subCategory": "コース科目_必須" },
+        { "name": "プログラミング言語", "credits": 2, "required": true, "subCategory": "コース科目_必須" },
+        { "name": "人工知能", "credits": 2, "required": true, "subCategory": "コース科目_必須" },
+        { "name": "知識工学", "credits": 2, "required": true, "subCategory": "コース科目_必須" },
+        { "name": "情報工学実験A（ハードウェア）", "credits": 3, "required": true, "subCategory": "コース科目_必須" },
+        { "name": "ソフトウェア設計", "credits": 2, "required": true, "subCategory": "コース科目_必須" },
+        { "name": "情報ネットワーク論", "credits": 2, "required": true, "subCategory": "コース科目_必須" },
+        { "name": "コンパイラ", "credits": 2, "required": true, "subCategory": "コース科目_必須" },
+        { "name": "情報工学実験B（メディア処理）", "credits": 3, "required": true, "subCategory": "コース科目_必須" },
+        { "name": "並列分散処理", "credits": 2, "required": true, "subCategory": "コース科目_必須" },
+        { "name": "情報工学実験C（ソフトウェア）", "credits": 3, "required": true, "subCategory": "コース科目_必須" },
+        
+        { "name": "パターン認識と学習", "credits": 1, "required": false, "subCategory": "コース科目_選択" },
+        { "name": "計算機数学", "credits": 1, "required": false, "subCategory": "コース科目_選択" },
+        { "name": "数理論理学", "credits": 1, "required": false, "subCategory": "コース科目_選択" },
+        { "name": "コンピュータアーキテクチャ2", "credits": 2, "required": false, "subCategory": "コース科目_選択" },
+        { "name": "論理設計", "credits": 1, "required": false, "subCategory": "コース科目_選択" },
+        { "name": "画像処理", "credits": 2, "required": false, "subCategory": "コース科目_選択" },
+        { "name": "オブジェクト指向言語", "credits": 2, "required": false, "subCategory": "コース科目_選択" },
+        { "name": "データベース", "credits": 2, "required": false, "subCategory": "コース科目_選択" },
+        { "name": "情報セキュリティ", "credits": 2, "required": false, "subCategory": "コース科目_選択" },
+        { "name": "応用線形代数", "credits": 2, "required": false, "subCategory": "コース科目_選択" },
+        { "name": "オートマトンと言語理論", "credits": 2, "required": false, "subCategory": "コース科目_選択" },
+        { "name": "言語解析論", "credits": 1, "required": false, "subCategory": "コース科目_選択" },
+        { "name": "インターシップ（情報）（長期）", "credits": 2, "required": false, "subCategory": "コース科目_選択" },
+        { "name": "インターシップ（情報）（短期）", "credits": 1, "required": false, "subCategory": "コース科目_選択" },
+        { "name": "アルゴリズムと計算量", "credits": 1, "required": false, "subCategory": "コース科目_選択" },
+        { "name": "ディジタル信号処理（情報）", "credits": 2, "required": false, "subCategory": "コース科目_選択" },
+        { "name": "ソフトウェア工学", "credits": 1, "required": false, "subCategory": "コース科目_選択" },
+        { "name": "映像メディア処理", "credits": 1, "required": false, "subCategory": "コース科目_選択" },
+        { "name": "情報化における職業1", "credits": 1, "required": false, "subCategory": "コース科目_選択" },
+        { "name": "情報化における職業2", "credits": 1, "required": false, "subCategory": "コース科目_選択" },
+
+        { "name": "マルチメディア工学", "credits": 2, "required": false, "subCategory": "他コース科目_選択" },
+        { "name": "モバイル通信", "credits": 2, "required": false, "subCategory": "他コース科目_選択" },
+        { "name": "最適化理論", "credits": 2, "required": false, "subCategory": "他コース科目_選択" },
+        { "name": "機械学習入門", "credits": 2, "required": false, "subCategory": "他コース科目_選択" },
+        { "name": "ハードウェアセキュリティ実験", "credits": 1, "required": false, "subCategory": "他コース科目_選択" }
+      ]
+    }
+  ]
+}

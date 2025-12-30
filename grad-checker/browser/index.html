@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>卒業要件チェッカー</title>
+<style>
+/* ===============================
+   ベース設定
+=============================== */
+body {
+  font-family: "Noto Sans JP", system-ui, sans-serif;
+  background: #f3f5f8;
+  color: #333;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px;
+  line-height: 1.6;
+}
+
+/* ===============================
+   セクションカード
+=============================== */
+.section {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  transition: box-shadow 0.25s ease;
+}
+
+.section:hover {
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* ===============================
+   見出し
+=============================== */
+h1 {
+  text-align: center;
+  font-size: 1.9rem;
+  margin-bottom: 1.2em;
+  letter-spacing: 0.03em;
+}
+
+.section h2 {
+  font-size: 1.25rem;
+  margin-bottom: 12px;
+  padding-left: 10px;
+  border-left: 5px solid #4caf50;
+}
+
+/* ===============================
+   入力・ボタン
+=============================== */
+input,
+select,
+button {
+  padding: 9px 12px;
+  font-size: 0.95rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  transition: all 0.2s ease;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #4caf50;
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+}
+
+button {
+  background: #4caf50;
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #43a047;
+  transform: translateY(-1px);
+}
+
+/* ===============================
+   テーブル
+=============================== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+}
+
+th {
+  background: #f1f3f5;
+  text-align: left;
+  font-weight: 600;
+}
+
+th, td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+tr:hover {
+  background: #f9fbfc;
+}
+
+/* ===============================
+   判定カード
+=============================== */
+.card {
+  border-radius: 14px;
+  padding: 18px;
+  margin-top: 16px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+.card.pass {
+  background: #e9f7ef;
+  border-left: 6px solid #2e7d32;
+  color: #1b5e20;
+}
+
+.card.fail {
+  background: #fdecea;
+  border-left: 6px solid #c62828;
+  color: #8e0000;
+}
+
+.card h3 {
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-size: 1.2rem;
+}
+
+/* ===============================
+   必須未達の強調
+=============================== */
+.missing-required {
+  background-color: #ffe5e5 !important;
+  border-left: 6px solid #e53935;
+}
+
+#missingRequiredBox {
+  background: #fff0f0;
+  border-left: 6px solid #e53935;
+}
+
+#missingRequiredList li {
+  margin: 4px 0;
+  font-weight: bold;
+}
+
+/* ===============================
+   モバイル対応
+=============================== */
+@media (max-width: 600px) {
+  body {
+    padding: 12px;
+  }
+
+  input, select, button {
+    width: 100%;
+  }
+
+  .section {
+    padding: 16px;
+  }
+}
+.required-mark {
+  color: #d32f2f;
+  font-weight: bold;
+  margin-left: 6px;
+}
+</style>
+</head>
+<body>
+
+<h1>卒業要件チェッカー（情報工学コース 2023）</h1>
+
+<div class="section">
+  <h2>必要単位</h2>
+  専門教育科目 <input id="reqSpecialized" type="number" value="0" min="0">
+  取得単位 <input id="obtainedSpecialized" type="number" value="0" min="0">
+</div>
+
+<div class="section">  
+  教養教育科目 <input id="reqGeneralEducation" type="number" value="0" min="0">
+  取得単位 <input id="obtainedGeneralEducation" type="number" value="0" min="0">
+</div>
+
+<!-- 使い方折りたたみ -->
+<div class="section">
+  <button id="toggleRules">卒業要件チェッカーの使い方を見る</button>
+  <div id="rulesSection" style="display:none; padding:10px; background:#f0f0f0; margin-top:5px; border-radius:8px;">
+    <ul>
+      <li>必要単位に自分の取得状況を入力します</li>
+      <li>教養教育科目は取得単位数記入必須！</li>
+      <li>科目追加で履修科目を登録できます</li>
+      <li>「判定」ボタンを押すと専門・教養・卒業判定が表示されます</li>
+      <li>「CSV/JSON」ボタンでデータを保存できます</li>
+      <li>入力内容は自動でブラウザに保存されます</li>
+    </ul>
+  </div>
+</div>
+
+<div class="section">
+  <h2>科目追加</h2>
+  <button id="loadTemplate">学科テンプレート読み込み</button><br>
+  <input id="courseName" placeholder="科目名">
+  <select id="courseCategory">
+    <option value="専門基礎科目_必須">専門基礎科目 必須</option>
+    <option value="専門基礎科目_選択">専門基礎科目 選択</option>
+    <option value="系科目_必須">系科目 必須</option>
+    <option value="系科目_選択">系科目 選択</option>
+    <option value="コース科目_必須">コース科目 必須</option>
+    <option value="コース科目_選択">コース科目 選択</option>
+    <option value="他コース科目_選択">他コース科目 選択</option>
+  </select>
+  <input id="courseCredits" type="number" placeholder="単位" min="0">
+  <button id="addCourse">追加</button>
+  <button id="checkAllRequired">必須科目を一括チェック</button>
+</div>
+
+<div class="section">
+  <input id="searchInput" placeholder="検索">
+</div>
+
+<div class="section">
+  <table>
+    <thead>
+      <tr>
+        <th>✔</th><th>科目</th><th>分類</th><th>単位</th><th>削除</th>
+      </tr>
+    </thead>
+    <tbody id="courseTable"></tbody>
+  </table>
+</div>
+
+<div class="section">
+  <button id="run">判定結果</button>
+  <div id="missingRequiredBox" class="card" style="display:none;">
+    <h3>⚠ 未履修の必須科目</h3>
+    <ul id="missingRequiredList"></ul>
+  </div>
+  <div id="result"></div>
+  <div id="requiredWarning" style="color:red; font-weight:bold;"></div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+let courses = JSON.parse(localStorage.getItem("courses") || "[]");
+
+const electiveLimits = {
+  "専門基礎科目_選択": {min:4, max:8},
+  "系科目_選択": {min:4, max:8},
+  "コース科目_選択": {min:16, max:Infinity},
+  "他コース科目_選択": {min:0, max:6}
+};
+const maxOtherCourseCredits = 6;
+
+function saveRequirements() {
+  localStorage.setItem("requirements", JSON.stringify({
+    specialized: $("reqSpecialized").value,
+    generalEdu: $("reqGeneralEducation").value,
+    obtainedSpecialized: $("obtainedSpecialized").value,
+    obtainedGeneralEducation: $("obtainedGeneralEducation").value
+  }));
+}
+
+function loadRequirements() {
+  const data = JSON.parse(localStorage.getItem("requirements") || "{}");
+  if(data.specialized !== undefined) $("reqSpecialized").value = Math.max(0, data.specialized);
+  if(data.generalEdu !== undefined) $("reqGeneralEducation").value = Math.max(0, data.generalEdu);
+  if(data.obtainedSpecialized !== undefined) $("obtainedSpecialized").value = Math.max(0, data.obtainedSpecialized);
+  if(data.obtainedGeneralEducation !== undefined) $("obtainedGeneralEducation").value = Math.max(0, data.obtainedGeneralEducation);
+}
+
+function saveCourses(){ localStorage.setItem("courses", JSON.stringify(courses)); }
+
+function render(){
+  const tbody=$("courseTable"); tbody.innerHTML="";
+  const keyword=$("searchInput").value.toLowerCase();
+
+  // カテゴリでまとめる
+  const categories={};
+  courses.forEach(c=>{
+    if(keyword && !c.name.toLowerCase().includes(keyword)) return;
+    const mainCat=c.category.split("_")[0];
+    if(!categories[mainCat]) categories[mainCat]=[];
+    categories[mainCat].push(c);
+  });
+
+  for(const catName in categories){
+    // カテゴリヘッダ
+    const trCat=document.createElement("tr");
+    const th=document.createElement("th");
+    th.colSpan=5; th.textContent=catName; th.className="category-header";
+    trCat.appendChild(th); tbody.appendChild(trCat);
+
+    categories[catName].forEach(c=>{
+      const tr=document.createElement("tr");
+      const chk=document.createElement("input"); chk.type="checkbox"; chk.checked=c.completed;
+      chk.onchange=()=>{ c.completed=chk.checked; saveCourses(); }
+      const del=document.createElement("button"); del.textContent="削除";
+      del.onclick=()=>{ courses.splice(courses.indexOf(c),1); saveCourses(); render(); }
+
+      const nameCell=document.createElement("td"); nameCell.textContent=c.name;
+      if(c.category.endsWith("_必須")){
+        const mark=document.createElement("span"); mark.textContent="★必須"; mark.className="required-mark";
+        nameCell.appendChild(mark);
+      }
+
+      tr.appendChild(document.createElement("td")).appendChild(chk);
+      tr.appendChild(nameCell);
+      tr.appendChild(document.createElement("td")).textContent=c.category;
+      tr.appendChild(document.createElement("td")).textContent=c.credits;
+      tr.appendChild(document.createElement("td")).appendChild(del);
+
+      tbody.appendChild(tr);
+    });
+  }
+}
+
+$("addCourse").onclick=()=>{
+  const name=$("courseName").value.trim();
+  const cat=$("courseCategory").value;
+  const credits=Number($("courseCredits").value);
+  if(!name||credits<0) return alert("入力不足または負の値です");
+  courses.push({name,category:cat,credits,completed:false});
+  $("courseName").value=""; $("courseCredits").value="";
+  saveCourses(); saveRequirements(); render();
+}
+
+$("checkAllRequired").onclick = () => {
+  // ① まず必須科目をすべてチェック
+  courses.forEach(c => {
+    if (c.category.endsWith("_必須")) c.completed = true;
+  });
+
+  // ② 未履修の必須科目を再計算
+  const uncheckedRequired = courses.filter(
+    c => c.category.endsWith("_必須") && !c.completed
+  );
+
+  const missingBox = $("missingRequiredBox");
+  const missingList = $("missingRequiredList");
+
+  // ③ 未履修がある場合だけ表示
+  if (uncheckedRequired.length > 0) {
+    missingBox.style.display = "block";
+    missingList.innerHTML = "";
+
+    uncheckedRequired.forEach(c => {
+      const li = document.createElement("li");
+      li.textContent = c.name + "（未履修）";
+      missingList.appendChild(li);
+    });
+  } else {
+    // 全部チェック済みなら非表示
+    missingBox.style.display = "none";
+  }
+
+  saveCourses();
+  render();
+};
+
+
+
+$("searchInput").oninput=render;
+
+$("run").onclick = () => {
+  const reqSpec = Number($("reqSpecialized").value) || 0;
+  const reqGen  = Number($("reqGeneralEducation").value) || 0;
+  const obtainedSpec = Number($("obtainedSpecialized").value) || 0;
+  const obtainedGen  = Number($("obtainedGeneralEducation").value) || 0;
+
+  const totals = {
+    "専門基礎科目_必須": obtainedSpec,
+    "専門基礎科目_選択": 0,
+    "系科目_必須": 0,
+    "系科目_選択": 0,
+    "コース科目_必須": 0,
+    "コース科目_選択": 0,
+    "他コース科目_選択": 0
+  };
+
+  courses.forEach(c => { if(c.completed && c.category in totals) totals[c.category] += c.credits; });
+  // 必須科目 未チェック確認
+  const uncheckedRequired = courses.filter(
+    c => c.category.endsWith("_必須") && !c.completed
+  );
+
+  if (uncheckedRequired.length > 0) {
+    $("requiredWarning").textContent =
+      "必須科目が未チェックです： " +
+      uncheckedRequired.map(c => c.name).join("、");
+  } else {
+    $("requiredWarning").textContent = "";
+
+    // 必須科目の行を赤くする
+    document.querySelectorAll(".course-row").forEach(row => {
+    const category = row.dataset.category;
+    const checkbox = row.querySelector(".course-check");
+
+    if (category?.endsWith("_必須")) {
+      if (!checkbox.checked) {
+        row.classList.add("missing-required");
+      } else {
+        row.classList.remove("missing-required");
+      }
+    }
+   });
+ }
+
+  // 上限適用
+  for(const cat in electiveLimits){
+    const limit = electiveLimits[cat];
+    if(totals[cat] > limit.max) totals[cat] = limit.max;
+  }
+
+  const specializedTotal = totals["専門基礎科目_必須"] + totals["専門基礎科目_選択"] +
+                           totals["系科目_必須"] + totals["系科目_選択"] +
+                           totals["コース科目_必須"] + totals["コース科目_選択"] +
+                           totals["他コース科目_選択"];
+
+  // 選択単位（コース＋他コース）だけで16単位以上判定
+  const electiveTotalForCheck = totals["コース科目_選択"] + totals["他コース科目_選択"];
+
+function checkElective(cat){
+  const obtained = totals[cat];
+
+  // コース科目選択だけは単位数のみ表示
+  if (cat === "コース科目_選択") {
+    return `${obtained} 単位`;
+  }
+
+  const limit = electiveLimits[cat];
+  if (!limit) return `${obtained} 単位`;
+
+  return `${obtained} 単位（${limit.min}〜${limit.max} 単位）`;
+}
+
+
+
+  // 専門教育科目カード
+  const html = `<div class="card ${specializedTotal >= reqSpec && electiveTotalForCheck>=electiveLimits["コース科目_選択"].min ? "pass" : "fail"}">
+    <h3>専門教育科目</h3>
+    <p>専門基礎必須: ${totals["専門基礎科目_必須"]} 単位</p>
+    <p>専門基礎選択: ${checkElective("専門基礎科目_選択")}</p>
+    <p>系科目必須: ${totals["系科目_必須"]} 単位</p>
+    <p>系科目選択: ${checkElective("系科目_選択")}</p>
+    <p>コース科目必須: ${totals["コース科目_必須"]} 単位</p>
+    <p>コース科目選択: ${checkElective("コース科目_選択")}</p>
+    <p>他コース選択: ${checkElective("他コース科目_選択")} (上限 ${maxOtherCourseCredits})</p>
+    <p>選択単位合計（コース＋他コース）: ${electiveTotalForCheck} / ${electiveLimits["コース科目_選択"].min} 単位以上</p>
+    <p>合計: ${specializedTotal} / 必要単位: ${reqSpec}</p>
+    <p>${specializedTotal >= reqSpec && electiveTotalForCheck>=electiveLimits["コース科目_選択"].min ? "合格" : "不合格"}</p>
+  </div>`;
+
+  // ここから卒業判定カードを追加
+  const totalCredits = specializedTotal + obtainedGen; // 専門＋教養（取得単位を反映）
+  const graduationPass = totalCredits >= 126;
+  const htmlGraduation = `<div class="card ${graduationPass ? "pass" : "fail"}">
+    <h3>卒業判定</h3>
+    <p>合計: ${totalCredits} / 126 単位</p>
+    <p>${graduationPass ? "卒業可能" : "卒業不可能"}</p>
+  </div>`;
+
+  $("result").innerHTML = html + htmlGraduation; // 専門カード＋卒業カードを表示
+};
+
+$("reqSpecialized").addEventListener("input",()=>{if($("reqSpecialized").value<0)$("reqSpecialized").value=0; saveRequirements();});
+$("reqGeneralEducation").addEventListener("input",()=>{if($("reqGeneralEducation").value<0)$("reqGeneralEducation").value=0; saveRequirements();});
+$("obtainedSpecialized").addEventListener("input",()=>{if($("obtainedSpecialized").value<0)$("obtainedSpecialized").value=0; saveRequirements();});
+$("obtainedGeneralEducation").addEventListener("input",()=>{if($("obtainedGeneralEducation").value<0)$("obtainedGeneralEducation").value=0; saveRequirements();});
+
+function download(name,text){ const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([text])); a.download=name; a.click(); }
+
+loadRequirements();
+render();
+
+// 使い方折りたたみ
+$("toggleRules").onclick = () => {
+  const sec = $("rulesSection");
+  sec.style.display = (sec.style.display === "none") ? "block" : "none";
+};
+
+$("loadTemplate").onclick=async()=>{
+  try{
+    const res=await fetch("template_info_engineering_2023.json");
+    const data=await res.json();
+
+    // 専門教育科目の必要単位
+    $("reqSpecialized").value = Math.max(0, data.categories.reduce((sum,c)=>sum+(c.requiredCredits||0),0));
+
+    // 教養教育科目の必要単位
+    if(data.generalEducationRequired !== undefined) {
+      $("reqGeneralEducation").value = Math.max(0, data.generalEducationRequired);
+    }
+
+    courses=[];
+    data.categories.forEach(cat=>{
+      cat.courses.forEach(c=>{
+        let subCat = c.subCategory || (c.required ? `${cat.name}_必須` : `${cat.name}_選択`);
+        courses.push({name:c.name,category:subCat,credits:c.credits,completed:false});
+      });
+    });
+
+    saveCourses();
+    saveRequirements();
+    render();
+    alert("学科テンプレートを読み込みました！");
+  }catch(e){ alert("テンプレートの読み込みに失敗しました"); console.error(e);}
+}
+
+</script>
+
+</body>
+</html>

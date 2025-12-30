@@ -1,5 +1,5 @@
-import fs from "fs";
-import path from "path";
+import * as fs from "fs";
+import * as path from "path";
 import { JsonValidator } from "../src/JsonValidator";
 import { Requirement, Course } from "../src/logic/types";
 
@@ -38,7 +38,7 @@ export class IntegratedInvalidJsonTestRunner {
       /* ------------------------------
        * 2. JsonValidator チェック
        * ------------------------------ */
-      const validation = new JsonValidator().validate(rawData);
+      const validation = new JsonValidator().validateFromObject(rawData);
 
       if (validation.ok === false) {
         results[file].validator = validation.error;

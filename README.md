@@ -11,6 +11,8 @@
 # コンパイル
 1. tsc
 2. tsc dist/tests/checkInvalidJson.ts(一つだけコンパイルさせたいとき)
+3. tsc --watch(自動コンパイル)
+4. tsc --watch --project tsconfig.browser.json(ブラウザ用)
 
 # テキスト出力（CLI）
 1. node dist/test.js data.json --text
@@ -20,7 +22,7 @@
 1. node dist/test.js data.json --json
 2. npx ts-node src/test.ts data.json --json(tsc不要)
 
-# Jest のテスト
+# package.json に書いてある “test” スクリプトを実行するコマンド
 npm test
 
 ## VScode
@@ -32,6 +34,21 @@ npm test
 ## git commit
 graduation-requirement-checkerディレクトリ上で行うこと
 
+# Node用ビルド
+npm run build:node
+
+# ブラウザ用ビルド
+npm run build:browser
+
+# 両方まとめてビルド
+npm run build
+
+# Node用テスト実行
+npm test
+
+## ビルド手順(↑まとめたので，必要ない)
+1. tsc --project tsconfig.json --watch（ブラウザ用）
+2. tsc --project tsconfig.node.json --watch(Node用)
 
 Graduation Requirement Checker
 

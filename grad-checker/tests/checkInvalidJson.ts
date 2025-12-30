@@ -1,6 +1,6 @@
-// tests/checkInvalidJsonOOP.ts
+// tests/checkInvalidJson.ts
 import * as fs from "fs";
-import path from "path";
+import * as path from "path";
 
 export class JsonValidator {
   private filePath: string;

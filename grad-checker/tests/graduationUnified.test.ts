@@ -1,4 +1,4 @@
-import path from "path";
+import * as path from "path";
 import { IntegratedInvalidJsonTestRunner } from "./IntegratedInvalidJsonTestRunner";
 
 const validJson = path.resolve(__dirname, "./valid"); // 正常系 JSON フォルダ
