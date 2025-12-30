@@ -2,14 +2,14 @@
 ※ 本リポジトリは学習目的のサンプルです。
 ※ 実際の卒業判定は各大学の公式情報を必ず確認してください。
 
-🚀 使い方
-1. 以下のURLにアクセス  
-   👉  https://nakahara11.github.io/graduation-requirement-checker/
-2. 履修した科目を入力
-3. 判定ボタンを押すだけ
-
 学科・コースごとの卒業要件をもとに、
 履修状況を入力することで 卒業可否を簡単に確認できる Web アプリ です。
+
+🚀 使い方
+1. 以下のURLにアクセス  
+   👉  https://yugit1111.github.io/graduation-requirement-checker/
+2. 履修した科目を入力
+3. 判定ボタンを押すだけ
 
 🔍 概要
 
